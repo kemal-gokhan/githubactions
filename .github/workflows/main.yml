@@ -1,0 +1,49 @@
+name: Multiple Event Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and Test
+        run: |
+          # Add your build and test commands here
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to Staging
+        run: |
+          # Add your deployment commands for staging environment here
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          # Add your deployment commands for production environment here
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [deploy, deploy-prod]
+
+    steps:
+      - name: Send Notifications
+        run: |
+          # Add your notification actions here
