@@ -96,7 +96,7 @@ jobs:
     name: Job 3
     runs-on: ubuntu-latest
     outputs:
-      soyisim: ${{ steps.soyisim.SOYISIM }}
+      soyisim: ${{ steps.soyisim.outputs.SOYISIM }}
 
     env:
       username3: 'kullaniciadi3'
