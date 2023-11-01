@@ -1,0 +1,109 @@
+name: Github Actions Workflow Video 2
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+
+  pull_request:
+    types:
+      - open
+    branches:
+      - 'main'
+  
+  workflow_call:
+    inputs:
+      username:
+        type: string
+        default: 'ahmet'
+        required: false
+
+  workflow_dispatch:
+    inputs:
+      username:
+        type: string
+        default: 'ahmet'
+        required: false
+env:
+  var1: 'deg1'
+
+jobs:
+  job1:
+    name: Job1
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_name	 == 'main' }}
+
+    steps:
+      - name: Step1
+        run: pwd
+      - name: Step2
+        shell: bash
+        run: |
+          whoami
+          ls
+          echo "$var1"
+          echo "${{ env.var1 }}"
+          echo "${{ inputs.username }}"
+          
+  job2:
+    name: Job2
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Step1
+        run: pwd
+      - name: Step2
+        shell: bash
+        run: |
+          whoami
+          ls
+          echo "$var1"
+          echo "${{ env.var1 }}"
+          echo "${{ inputs.username }}"
+      - name: Step3
+        shell: bash
+        env:
+          var2: 'deg2'
+        run: |
+          echo "var3=deg3" >> $GITHUB_ENV
+          echo "${{ env.var2 }}"
+          echo "${{ env.var3 }}"
+      - name: Step4
+        shell: bash
+        run: |
+          echo "${{ env.var3 }}"
+  job3:
+    name: Job3
+    needs: job2
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      var4: ${{ steps.steps-var4.outputs.var4 }}
+      var5: ${{ steps.steps-var4.outputs.var5 }}
+
+    steps:
+      - name: Step1
+        run: |
+          echo "${{ env.var3 }}"
+      - name: Step2
+        id: steps-var4
+        run: |
+          echo "var4=deg4" >> $GITHUB_OUTPUT
+          echo "var5=deg5" >> $GITHUB_OUTPUT
+  job4:
+    name: Job4
+    needs: job3
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Step1
+        run: |
+          echo "${{ needs.job3.outputs.var4 }}"
+          echo "${{ needs.job3.outputs.var5 }}"
+      - name: Step2
+        continue-on-error: true
+        run: |
+          asd
