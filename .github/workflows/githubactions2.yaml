@@ -35,7 +35,7 @@ env:
 
 jobs:
   job1:
-    if: ${{ github.head_ref == 'main' }}
+    if: ${{ github.ref_name == 'main' }}
     timeout-minutes: 10
     name: Job 1
     runs-on: ubuntu-latest
@@ -122,6 +122,5 @@ jobs:
 
       - name: Steps2
         run: |
-          echo '${{ needs.job3.steps.soyisim.outputs }}'
-          echo '${{ needs.job3.steps.soyisim.outputs.SOYISIM }}'
+          echo '${{ needs.job3.soyisim.SOYISIM }}'
         
