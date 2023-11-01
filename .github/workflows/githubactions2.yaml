@@ -122,5 +122,5 @@ jobs:
 
       - name: Steps2
         run: |
-          echo '${{ needs.job3.soyisim.outputs.SOYISIM }}'
-      
+          echo '${{ needs.job3.outputs.soyisim.SOYISIM }}'
+        
