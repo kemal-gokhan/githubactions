@@ -1,0 +1,123 @@
+
+name: Github Action Workflow 2
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+
+  pull_request:
+    types:
+      - 'opened'
+      - 'reopened'
+    branches:
+      - 'main'
+
+  workflow_call:
+    inputs:
+        username:
+          description: 'A username passed from the caller workflow'
+          default: 'john-doe'
+          required: false
+          type: string
+
+  workflow_dispatch:
+    inputs:
+        username:
+          description: 'A username passed from the caller workflow'
+          default: 'john-doe'
+          required: false
+          type: string
+env:
+  username2: 'kullaniciadi2'
+
+
+jobs:
+  job1:
+    if: ${{ github.head_ref = 'main' }}
+    timeout-minutes: 10
+    name: Job 1
+    runs-on: ubuntu-latest
+    env:
+      username3: 'kullaniciadi3'
+    steps:
+      - name: Steps1
+        run: pwd
+
+      - name: Steps2 
+        run: whoami
+
+      - name: Steps3 
+        run: |
+          ls -ltrha
+          cat /etc/passwd
+          echo '$username2'
+          echo '$username3'
+          echo '${{ env.username2 }}'
+          echo '${{ env.username3 }}'
+          echo '${{ inputs.username }}'
+          
+  job2:
+    timeout-minutes: 10
+    name: Job 2
+    runs-on: ubuntu-latest
+    env:
+      username3: 'kullaniciadi3'
+    steps:
+      - name: Steps1
+        run: pwd
+
+      - name: Steps2 
+        run: whoami
+
+      - name: Steps3 
+        run: |
+          ls -ltrha
+          cat /etc/passwd
+          echo '$username2'
+          echo '$username3'
+          echo '${{ env.username2 }}'
+          echo '${{ env.username3 }}'
+          echo '${{ inputs.username }}'
+
+      - name: Step4
+        id: isim
+        run: |
+          echo "ISIM=KEMAL" >> $GITHUB_ENV
+
+      - name: Step5
+        run: |
+          echo '${{ env.ISIM }}'
+
+
+  job3:
+    timeout-minutes: 10
+    name: Job 3
+    runs-on: ubuntu-latest
+    env:
+      username3: 'kullaniciadi3'
+    steps:
+      - name: Steps1
+        run: |
+          echo ${{ env.ISIM }}
+
+      - name: Steps2
+        id: soyisim
+        run: |
+          echo "SOYISIM=KEMAL" >> $GITHUB_OUTPUT
+
+  job4:
+    name: Job 4
+    runs-on: ubuntu-latest
+    env:
+      username3: 'kullaniciadi3'
+    steps:
+      - name: Steps1
+        run: |
+          echo ${{ env.ISIM }}
+
+      - name: Steps2
+        run: |
+          echo '${{ job3.steps.soyisim.outputs }}'
+          echo '${{ job3.steps.soyisim.outputs.SOYISIM }}'
