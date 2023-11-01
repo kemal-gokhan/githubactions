@@ -99,6 +99,7 @@ jobs:
       username3: 'kullaniciadi3'
     steps:
       - name: Steps1
+        continue-on-error: true
         run: |
           echo ${{ env.ISIM }}
 
@@ -109,16 +110,18 @@ jobs:
 
   job4:
     name: Job 4
+    needs: job3
     runs-on: ubuntu-latest
     env:
       username3: 'kullaniciadi3'
     steps:
       - name: Steps1
+        continue-on-error: true
         run: |
           echo '${{ env.ISIM }}'
 
       - name: Steps2
         run: |
-          echo '${{ job3.steps.soyisim.outputs }}'
-          echo '${{ job3.steps.soyisim.outputs.SOYISIM }}'
+          echo '${{ needs.job3.steps.soyisim.outputs }}'
+          echo '${{ needs.job3.steps.soyisim.outputs.SOYISIM }}'
         
