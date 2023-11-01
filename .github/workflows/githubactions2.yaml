@@ -95,6 +95,9 @@ jobs:
     timeout-minutes: 10
     name: Job 3
     runs-on: ubuntu-latest
+    outputs:
+      soyisim: ${{ steps.soyisim.SOYISIM }}
+
     env:
       username3: 'kullaniciadi3'
     steps:
@@ -122,5 +125,7 @@ jobs:
 
       - name: Steps2
         run: |
-          echo '${{ needs.job3.outputs.soyisim.SOYISIM }}'
+          echo '${{ needs.job3.outputs.soyisim }}'
         
+
+
