@@ -1,38 +1,37 @@
 name: Video 3
 
 on:
-    push:
-    workflow_dispatch:
-        inputs:
-            job1:
-                description: 'Choose if you want to run Job 1'
-                required: false
-                type: boolean
-            job2:
-                description: 'Choose if you want to run Job 2'
-                required: false
-                type: boolean
-
+  push:
+  workflow_dispatch:
+    inputs:
+      job1:
+        description: 'Choose if you want to run Job 1'
+        required: false
+        type: boolean
+      job2:
+        description: 'Choose if you want to run Job 2'
+        required: false
+        type: boolean
 
 jobs:
-    job-1:
-        name: Job 1
-        runs-on: ubuntu-latest
-        if: ${{ inputs.job1 == 'true' }}
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Run script
-              run: |
-                  echo "Hello ${{ github.job }}"
+  job-1:
+    name: Job 1
+    runs-on: ubuntu-latest
+    if: ${{ inputs.job1 == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          echo "Hello ${{ github.job }}"
 
-    job-2:
-        name: Job 2
-        runs-on: ubuntu-latest
-        if: ${{ inputs.job2 == 'true' }}
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Run script
-              run: |
-                echo "Hello ${{ github.job }}"
+  job-2:
+    name: Job 2
+    runs-on: ubuntu-latest
+    if: ${{ inputs.job2 == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          echo "Hello ${{ github.job }}"
