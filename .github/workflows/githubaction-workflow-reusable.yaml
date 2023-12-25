@@ -8,10 +8,12 @@ on:
         description: 'Choose if you want to run Job 1'
         required: false
         type: boolean
+        default: true
       job2:
         description: 'Choose if you want to run Job 2'
         required: false
         type: boolean
+        default: true
 
 jobs:
   job-1:
@@ -20,7 +22,7 @@ jobs:
     if: ${{ inputs.job1 == true }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Run script
         run: |
           echo "Hello ${{ github.job }}"
@@ -31,7 +33,7 @@ jobs:
     if: ${{ inputs.job2 == true }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Run script
         run: |
           echo "Hello ${{ github.job }}"
