@@ -7,12 +7,10 @@ on:
             job1:
                 description: 'Choose if you want to run Job 1'
                 required: false
-                default: true
                 type: boolean
             job2:
                 description: 'Choose if you want to run Job 2'
                 required: false
-                default: true
                 type: boolean
 
 
