@@ -2,7 +2,7 @@ name: Video 3
 
 on:
   schedule:
-    - cron: '1 * * * *'
+    - cron: '* * * * *'
   push:
   workflow_dispatch:
     inputs:
