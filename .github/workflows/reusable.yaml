@@ -1,0 +1,31 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      variable1:
+        description: 'Variable 1'
+        required: true
+        default: 'default value'
+        type: string
+
+jobs:
+    job1:
+      name: Job 1
+      runs-on: ubuntu-latest
+      steps:
+        - name: Python version
+          run: python --version
+        - name: step1
+          shell: bash
+          run: echo ${{ inputs.variable1 }}
+    job2:
+      name: Job 2
+      runs-on: ubuntu-latest
+      steps:
+        - name: step1
+          run: echo step1
+        - name: step1
+          run: echo step1
+        - name: step1
+          run: echo step1

@@ -1,0 +1,8 @@
+name: 'Action2'
+description: 'Description'
+runs:
+  using: "composite"
+  steps:
+    - name: Run a one-line script
+      shell: bash
+      run: echo Hello, world! Action2

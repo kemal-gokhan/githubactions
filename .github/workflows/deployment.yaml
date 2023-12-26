@@ -1,0 +1,40 @@
+name: Deployment Workflow
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+    job1:
+      name: Job 1
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Run a one-line script
+          run: echo Hello, world!
+        - name: Run a multi-line script
+          run: |
+            echo Add other actions to build,
+            echo test, and deploy your project.
+        - name: Python version
+          run: python --version
+    job2:
+      name: Job 2
+      needs: job1
+      uses: ./.github/workflows/reusable.yaml
+      with:
+        variable1: "deger1"
+
+    job3:
+      name: Job 3
+      runs-on: ubuntu-latest
+      steps:
+        - name: Actiondan once
+          run: echo Hello, world!
+        - name: Action i cagir
+          uses: kemal-gokhan/githubactions/.github/actions/action1@video
+        - name: Action 2i cagir
+          uses: kemal-gokhan/githubactions/.github/actions/action2@video
+          
+
