@@ -32,9 +32,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Action
-        uses: ./.github/actions/folder1/action.yaml@main
+        uses: kemal-gokhan/githubactions/.github/actions/folder1/action.yml@main
       - name: Normal Step
         run: echo "Bu normal bir step."
       - name: Action
-        uses: ./.github/actions/folder1/action.yaml@main
+        uses: kemal-gokhan/githubactions/.github/actions/folder1/action.yml@main
         
