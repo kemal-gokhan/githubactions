@@ -30,9 +30,9 @@ jobs:
     needs: job2
     steps:
       - name: Action
-        uses: ./.github/actions/folder1/action.yaml@main
+        uses: kemal-gokhan/githubactions/.github/actions/folder1/action.yaml@main
       - name: Normal Step
         run: echo "Bu normal bir step."
       - name: Action
-        uses: ./.github/actions/folder1/action.yaml@main
+        uses: kemal-gokhan/githubactions/.github/actions/folder1/action.yaml@main
         
