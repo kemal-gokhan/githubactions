@@ -19,8 +19,8 @@ jobs:
       - shell: bash
         run: |
           if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan|kemalgoekhan)$ ]]; then
-            echo "Hello to you too!"
+            echo "Approved by ${{ github.event.comment.user.login }}"
           else
-            echo "I don't know what to say."
+            echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
           fi
           
