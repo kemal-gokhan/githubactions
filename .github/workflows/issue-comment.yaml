@@ -13,16 +13,14 @@ jobs:
     permissions:
       issues: write
     steps:
-      - run: |
-          echo "Issue number: ${{ github.event.issue.number }}"
-          echo "Comment author: ${{ github.event.comment.user.login }}"
-          echo "Comment: ${{ github.event.comment.body }}"
-          echo "Comment ID: ${{ github.event.comment.id }}"
       - uses: actions/checkout@v4
       - shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment: ${{ github.event.comment.body }}"
           if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
             echo "Approved by ${{ github.event.comment.user.login }}"
             gh issue close ${{ github.event.issue.number }}

@@ -28,21 +28,10 @@ jobs:
       contents: read
       issues: write 
     steps:
+      - uses: actions/checkout@v4
       - shell: bash
         run: |
-          echo '---
-          title: ${{ github.head_ref || github.ref_name }} needs approval | ${{ github.actor }} | ${{ github.run_id }}
-          ---' > comment.md
-          cat comment.md
-      - uses: JasonEtco/create-an-issue@v2.9.2
-        id: create-issue
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          filename: comment.md
-          assignees: 'kemalgoekhan'
-      - run: 
-          echo 'Created issue number ${{ steps.create-issue.outputs.number }}'
-          echo 'Created ${{ steps.create-issue.outputs.url }}'
+          gh issue create --assignee kemalgoekhan,kemal-gokhan --title "${{ github.head_ref || github.ref_name }} needs approval | ${{ github.actor }} | ${{ github.run_id }}"\
+          --body "${{ github.head_ref || github.ref_name }}.$GITHUB_RUN_NUMBER created by ${{ github.actor }}\n It needs approval from the assignees in order to deploy."
 
           
