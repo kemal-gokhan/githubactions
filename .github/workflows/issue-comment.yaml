@@ -1,3 +1,5 @@
+name: Issue Comment Checker
+
 on:
   issue_comment:
     types: [created]
@@ -7,8 +9,10 @@ jobs:
     # This job only runs for issue comments
     name: Issue comment
     if: ${{ !github.event.issue.pull_request }}
-    runs-on: runner-arm-multi
+    runs-on: ubuntu-latest
     steps:
       - run: |
           echo "Issue number: ${{ github.event.issue.number }}"
           echo "Comment: ${{ github.event.comment.body }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment author: ${{ github.event.body }}"
