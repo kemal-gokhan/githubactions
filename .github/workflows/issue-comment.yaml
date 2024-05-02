@@ -19,6 +19,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Issue Body: ${{ github.event.issue.body }}"
+          echo "Issue Body: ${{ github.event.issue.body }}" | grep -oP '(?<=branchname: )[^\s]+'
+          echo "Issue Body: ${{ github.event.issue.body }}" | grep -oP '(?<=system: )[^\s]+'
           echo "Comment author: ${{ github.event.comment.user.login }}"
           echo "Comment: ${{ github.event.comment.body }}"
           if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
