@@ -10,6 +10,8 @@ jobs:
     name: Issue comment
     if: ${{ !github.event.issue.pull_request }}
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - run: |
           echo "Issue number: ${{ github.event.issue.number }}"
