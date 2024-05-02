@@ -18,7 +18,7 @@ jobs:
           echo "Comment ID: ${{ github.event.comment.id }}"
       - shell: bash
         run: |
-          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan|kemalgoekhan)$ ]]; then
+          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
             echo "Approved by ${{ github.event.comment.user.login }}"
           else
             echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
