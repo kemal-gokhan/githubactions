@@ -17,6 +17,8 @@ jobs:
           echo "Comment: ${{ github.event.comment.body }}"
           echo "Comment ID: ${{ github.event.comment.id }}"
       - shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
             echo "Approved by ${{ github.event.comment.user.login }}"
