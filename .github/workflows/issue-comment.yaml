@@ -16,6 +16,7 @@ jobs:
           echo "Comment author: ${{ github.event.comment.user.login }}"
           echo "Comment: ${{ github.event.comment.body }}"
           echo "Comment ID: ${{ github.event.comment.id }}"
+      - uses: actions/checkout@v4
       - shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
