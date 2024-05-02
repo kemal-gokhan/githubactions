@@ -32,7 +32,7 @@ jobs:
         run: |
           echo '---
           title: ${{ github.head_ref || github.ref_name }} approval | ${{ github.actor }}
-          body: 
+          body: Please review the changes and approve.
           ---' > comment.md
           cat comment.md
       - uses: JasonEtco/create-an-issue@v2.9.2
