@@ -13,6 +13,14 @@ jobs:
     steps:
       - run: |
           echo "Issue number: ${{ github.event.issue.number }}"
-          echo "Comment: ${{ github.event.comment.body }}"
           echo "Comment author: ${{ github.event.comment.user.login }}"
-          echo "Comment author: ${{ github.event.body }}"
+          echo "Comment: ${{ github.event.comment.body }}"
+          echo "Comment ID: ${{ github.event.comment.id }}"
+      - shell: bash
+        run: |
+          if [[ "${{ github.event.comment.body }}" == "approve" ]]; then
+            echo "Hello to you too!"
+          else
+            echo "I don't know what to say."
+          fi
+          
