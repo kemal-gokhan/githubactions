@@ -20,7 +20,10 @@ jobs:
         run: |
           if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
             echo "Approved by ${{ github.event.comment.user.login }}"
+            gh issue close --comment "Auto-closing issue" "${{ github.event.issue.number }}"
           else
             echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
           fi
+
+        
           
