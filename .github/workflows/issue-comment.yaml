@@ -33,7 +33,7 @@ jobs:
           echo "SOURCEBRANCH=$SOURCEBRANCH" >> $GITHUB_OUTPUT
           echo "Comment author: ${{ github.event.comment.user.login }}"
           echo "Comment: ${{ github.event.comment.body }}"
-          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
+          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^($DEPLOYMENT_APPROVERS_PIPE)$ ]]; then
             echo "Approved by ${{ github.event.comment.user.login }}"
             gh issue close ${{ github.event.issue.number }}
           else
