@@ -24,6 +24,9 @@ jobs:
         run: |
           echo "Issue number: ${{ github.event.issue.number }}"
           echo "Issue Body: ${{ github.event.issue.body }}"
+          echo "${{ vars.DEPLOYMENT_APPROVERS }}"
+          DEPLOYMENT_APPROVERS_PIPE=$(echo "${{ vars.DEPLOYMENT_APPROVERS }}" | sed 's#,#|#g')
+          echo "DEPLOYMENT_APPROVERS_PIPE=$DEPLOYMENT_APPROVERS_PIPE"
           SYSTEM=$(echo "${{ github.event.issue.body }}" | grep -oP 'system:\s*\K\S+')
           SOURCEBRANCH=$(echo "${{ github.event.issue.body }}" | grep -oP 'sourcebranch:\s*\K\S+')
           echo "SYSTEM=$SYSTEM" >> $GITHUB_OUTPUT
