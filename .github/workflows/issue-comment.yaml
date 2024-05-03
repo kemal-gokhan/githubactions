@@ -36,14 +36,14 @@ jobs:
           else
             echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
           fi
-  output_test:
-    runs-on: ubuntu-latest
+  reusable-test:
+    name: Reusable Try
+    uses: ./.github/workflows/reusable.yaml
     needs: issue_commented
-    steps:
-      - shell: bash
-        run: |
-          echo "${{ needs.issue_commented.outputs.SYSTEM }}"
-          echo "${{ needs.issue_commented.outputs.SOURCEBRANCH }}"
+    with:
+      SYSTEM: ${{ needs.issue_commented.outputs.SYSTEM }}
+      SOURCEBRANCH: ${{ needs.issue_commented.outputs.SOURCEBRANCH }}
+      runner: ubuntu-latest
 
         
           

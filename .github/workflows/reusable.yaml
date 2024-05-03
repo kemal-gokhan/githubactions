@@ -1,0 +1,21 @@
+name: Reusable Run
+
+on:
+  workflow_call:
+    inputs:
+      SYSTEM:
+        required: true
+        type: string
+      SOURCEBRANCH:
+        required: true
+        type: string
+      runner:
+        required: true
+        type: string
+jobs:
+    j1:
+      name: Reusable Workflow
+      runs-on: ${{ inputs.runner }}
+      steps:
+        - run: |
+            echo "${{ inputs.runner }} , ${{ inputs.SYSTEM }} , ${{ inputs.SOURCEBRANCH }}"
