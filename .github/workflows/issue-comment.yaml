@@ -1,0 +1,49 @@
+name: Issue Comment Checker
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  issue_commented:
+    # This job only runs for issue comments
+    name: Issue comment
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    outputs:
+      SYSTEM: ${{ steps.issue_commented.outputs.SYSTEM }}
+      SOURCEBRANCH: ${{ steps.issue_commented.outputs.SOURCEBRANCH }}
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        id: issue_commented
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Issue Body: ${{ github.event.issue.body }}"
+          SYSTEM=$(echo "${{ github.event.issue.body }}" | grep -oP 'system:\s*\K\S+')
+          SOURCEBRANCH=$(echo "${{ github.event.issue.body }}" | grep -oP 'sourcebranch:\s*\K\S+')
+          echo "SYSTEM=$SYSTEM" >> $GITHUB_OUTPUT
+          echo "SOURCEBRANCH=$SOURCEBRANCH" >> $GITHUB_OUTPUT
+          echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment: ${{ github.event.comment.body }}"
+          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^(kemal-gokhan)$ ]]; then
+            echo "Approved by ${{ github.event.comment.user.login }}"
+            gh issue close ${{ github.event.issue.number }}
+          else
+            echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
+          fi
+  output_test:
+    runs-on: ubuntu-latest
+    needs: issue_commented
+    steps:
+      - shell: bash
+        run: |
+          echo "${{ needs.issue_commented.outputs.SYSTEM }}"
+          echo "${{ needs.issue_commented.outputs.SOURCEBRANCH }}"
+
+        
+          
