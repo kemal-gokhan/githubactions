@@ -32,7 +32,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh issue create --assignee kemalgoekhan,kemal-gokhan --title "${{ github.head_ref || github.ref_name }} needs approval | ${{ github.actor }} | ${{ github.run_id }}" \
+          gh issue create --assignee ${{ vars.DEPLOYMENT_APPROVERS }} --title "${{ github.head_ref || github.ref_name }} needs approval | ${{ github.actor }} | ${{ github.run_id }}" \
           --body "sourcebranch: preview-deploy system: preview created by ${{ github.actor }}. It needs approval from the assignees in order to deploy."
 
           
