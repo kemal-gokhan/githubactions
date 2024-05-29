@@ -47,8 +47,12 @@ jobs:
           COMMENT_BODY=$(echo "$LAST_COMMENT" | jq -r '.body')
           echo "Comment: $COMMENT_BODY"
 
-
-
+          if [[ "$COMMENT_BODY" == "approved" && "$COMMENT_AUTHOR_LOGIN" =~ ^($DEPLOYMENT_APPROVERS_PIPE)$ ]]; then
+              echo "Last comment by $COMMENT_AUTHOR_LOGIN is approved."
+          else
+              echo "Last comment by $COMMENT_AUTHOR_LOGIN is not approved."
+              exit 5
+          fi
 
           ###################
           # echo "Issue number: ${{ github.event.issue.number }}"
