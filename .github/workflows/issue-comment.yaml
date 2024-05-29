@@ -1,8 +1,10 @@
 name: Issue Comment Checker
 
 on:
-  issue_comment:
-    types: [created]
+  # issue_comment:
+  #   types: [created]
+  issues:
+    types: [closed]
 
 jobs:
   issue_commented:
@@ -22,23 +24,54 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Issue number: ${{ github.event.issue.number }}"
-          echo "Issue Body: ${{ github.event.issue.body }}"
-          echo "${{ vars.DEPLOYMENT_APPROVERS }}"
+          # Fetch issue body using curl
+          ISSUE_BODY=$(curl -s -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}" \
+          | jq -r '.body')
+          
+        
+          # Fetch issue comments using curl
+          COMMENTS=$(curl -s -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments")
+
+          # # Loop through each comment and extract author login
+          # while read -r COMMENT; do
+          #     COMMENT_AUTHOR_LOGIN=$(echo "$COMMENT" | jq -r '.user.login')
+          #     echo "Comment author: $COMMENT_AUTHOR_LOGIN"
+          # done <<< "$(echo "$COMMENTS" | jq -c '.[]')"
+
           DEPLOYMENT_APPROVERS_PIPE=$(echo "${{ vars.DEPLOYMENT_APPROVERS }}" | sed 's#,#|#g')
           echo "DEPLOYMENT_APPROVERS_PIPE=$DEPLOYMENT_APPROVERS_PIPE"
-          SYSTEM=$(echo "${{ github.event.issue.body }}" | grep -oP 'system:\s*\K\S+')
-          SOURCEBRANCH=$(echo "${{ github.event.issue.body }}" | grep -oP 'sourcebranch:\s*\K\S+')
-          echo "SYSTEM=$SYSTEM" >> $GITHUB_OUTPUT
-          echo "SOURCEBRANCH=$SOURCEBRANCH" >> $GITHUB_OUTPUT
-          echo "Comment author: ${{ github.event.comment.user.login }}"
-          echo "Comment: ${{ github.event.comment.body }}"
-          if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^($DEPLOYMENT_APPROVERS_PIPE)$ ]]; then
-            echo "Approved by ${{ github.event.comment.user.login }}"
-            gh issue close ${{ github.event.issue.number }}
-          else
-            echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
-          fi
+          LAST_COMMENT=$(echo "$COMMENTS" | jq -r '.[-1]')
+          echo "Last comment: $LAST_COMMENT"
+          COMMENT_AUTHOR_LOGIN=$(echo "$LAST_COMMENT" | jq -r '.user.login')
+          echo "Comment author: $COMMENT_AUTHOR_LOGIN"
+          COMMENT_BODY=$(echo "$LAST_COMMENT" | jq -r '.body')
+          echo "Comment: $COMMENT_BODY"
+
+
+
+
+          ###################
+          # echo "Issue number: ${{ github.event.issue.number }}"
+          # echo "Issue Body: ${{ github.event.issue.body }}"
+          # echo "${{ vars.DEPLOYMENT_APPROVERS }}"
+          # DEPLOYMENT_APPROVERS_PIPE=$(echo "${{ vars.DEPLOYMENT_APPROVERS }}" | sed 's#,#|#g')
+          # echo "DEPLOYMENT_APPROVERS_PIPE=$DEPLOYMENT_APPROVERS_PIPE"
+          # SYSTEM=$(echo "${{ github.event.issue.body }}" | grep -oP 'system:\s*\K\S+')
+          # SOURCEBRANCH=$(echo "${{ github.event.issue.body }}" | grep -oP 'sourcebranch:\s*\K\S+')
+          # echo "SYSTEM=$SYSTEM" >> $GITHUB_OUTPUT
+          # echo "SOURCEBRANCH=$SOURCEBRANCH" >> $GITHUB_OUTPUT
+          # echo "Comment author: ${{ github.event.comment.user.login }}"
+          # echo "Comment: ${{ github.event.comment.body }}"
+          # if [[ "${{ github.event.comment.body }}" == "approve" && "${{ github.event.comment.user.login }}" =~ ^($DEPLOYMENT_APPROVERS_PIPE)$ ]]; then
+          #   echo "Approved by ${{ github.event.comment.user.login }}"
+          #   gh issue close ${{ github.event.issue.number }}
+          # else
+          #   echo "Not approved because the comment is not 'approve' or the comment author is not privileged user"
+          # fi
   reusable-test:
     name: Reusable Try
     uses: ./.github/workflows/reusable.yaml
